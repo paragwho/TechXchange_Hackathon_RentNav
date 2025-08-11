@@ -1,0 +1,328 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Rentivity Spark Design System - Premium 3D Real Estate Platform
+All colors MUST be HSL. */
+
+@layer base {
+  :root {
+    /* Base Colors */
+    --background: 210 20% 98%;
+    --foreground: 215 25% 15%;
+
+    /* Glass Morphism Cards */
+    --card: 210 20% 98%;
+    --card-foreground: 215 25% 15%;
+    --glass: 210 30% 95%;
+    --glass-border: 210 20% 85%;
+
+    /* Navigation */
+    --nav-background: 210 20% 98%;
+    --nav-glass: 210 30% 95%;
+
+    /* Primary Brand Colors */
+    --primary: 217 91% 60%;
+    --primary-foreground: 210 40% 98%;
+    --primary-glow: 217 91% 70%;
+
+    /* Secondary Real Estate Colors */
+    --secondary: 158 64% 52%;
+    --secondary-foreground: 210 40% 98%;
+    --secondary-glow: 158 64% 62%;
+
+    /* Accent Colors */
+    --accent: 43 96% 56%;
+    --accent-foreground: 215 25% 15%;
+    --accent-glow: 43 96% 66%;
+
+    /* Neutral Tones */
+    --muted: 210 20% 92%;
+    --muted-foreground: 215 16% 46%;
+    --neutral: 210 15% 88%;
+    --neutral-foreground: 215 20% 25%;
+
+    /* Interactive States */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --success: 158 64% 52%;
+    --warning: 43 96% 56%;
+
+    /* Form Elements */
+    --border: 210 20% 85%;
+    --input: 210 20% 95%;
+    --ring: 217 91% 60%;
+
+    /* 3D Effects */
+    --shadow-soft: 210 25% 15% / 0.1;
+    --shadow-medium: 210 25% 15% / 0.15;
+    --shadow-strong: 210 25% 15% / 0.25;
+    --shadow-glow-primary: 217 91% 60% / 0.3;
+    --shadow-glow-secondary: 158 64% 52% / 0.3;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%), hsl(217 91% 70%));
+    --gradient-secondary: linear-gradient(135deg, hsl(158 64% 52%), hsl(158 64% 62%));
+    --gradient-hero: linear-gradient(135deg, hsl(217 91% 60% / 0.1), hsl(158 64% 52% / 0.1));
+    --gradient-glass: linear-gradient(135deg, hsl(210 30% 95% / 0.8), hsl(210 20% 90% / 0.6));
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    /* Base Colors */
+    --background: 215 28% 8%;
+    --foreground: 210 40% 95%;
+
+    /* Glass Morphism Cards */
+    --card: 215 28% 10%;
+    --card-foreground: 210 40% 95%;
+    --glass: 215 25% 12%;
+    --glass-border: 215 20% 20%;
+
+    /* Navigation */
+    --nav-background: 215 28% 8%;
+    --nav-glass: 215 25% 12%;
+
+    /* Primary Brand Colors */
+    --primary: 217 91% 65%;
+    --primary-foreground: 215 28% 8%;
+    --primary-glow: 217 91% 75%;
+
+    /* Secondary Real Estate Colors */
+    --secondary: 158 64% 58%;
+    --secondary-foreground: 215 28% 8%;
+    --secondary-glow: 158 64% 68%;
+
+    /* Accent Colors */
+    --accent: 43 96% 62%;
+    --accent-foreground: 215 28% 8%;
+    --accent-glow: 43 96% 72%;
+
+    /* Neutral Tones */
+    --muted: 215 20% 15%;
+    --muted-foreground: 215 16% 65%;
+    --neutral: 215 18% 18%;
+    --neutral-foreground: 210 40% 85%;
+
+    /* Interactive States */
+    --destructive: 0 84% 65%;
+    --destructive-foreground: 210 40% 95%;
+    --success: 158 64% 58%;
+    --warning: 43 96% 62%;
+
+    /* Form Elements */
+    --border: 215 20% 20%;
+    --input: 215 25% 12%;
+    --ring: 217 91% 65%;
+
+    /* 3D Effects */
+    --shadow-soft: 215 50% 5% / 0.3;
+    --shadow-medium: 215 50% 3% / 0.4;
+    --shadow-strong: 215 50% 2% / 0.6;
+    --shadow-glow-primary: 217 91% 65% / 0.4;
+    --shadow-glow-secondary: 158 64% 58% / 0.4;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(217 91% 65%), hsl(217 91% 75%));
+    --gradient-secondary: linear-gradient(135deg, hsl(158 64% 58%), hsl(158 64% 68%));
+    --gradient-hero: linear-gradient(135deg, hsl(217 91% 65% / 0.15), hsl(158 64% 58% / 0.15));
+    --gradient-glass: linear-gradient(135deg, hsl(215 25% 12% / 0.8), hsl(215 20% 15% / 0.6));
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  /* 3D Glass Components */
+  .glass-card {
+    @apply backdrop-blur-xl bg-gradient-to-br from-glass/80 to-glass/60 border border-glass-border/50 rounded-2xl shadow-2xl;
+  }
+
+  .glass-nav {
+    @apply backdrop-blur-xl bg-nav-glass/90 border-b border-glass-border/30;
+  }
+
+  .glass-button {
+    @apply backdrop-blur-md bg-gradient-to-r from-primary/20 to-secondary/20 border border-white/20 rounded-xl 
+           shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300;
+  }
+
+  /* 3D Text Effects */
+  .text-3d {
+    text-shadow: 
+      0 1px 0 hsl(var(--shadow-soft)),
+      0 2px 0 hsl(var(--shadow-soft)),
+      0 3px 0 hsl(var(--shadow-soft)),
+      0 4px 0 hsl(var(--shadow-soft)),
+      0 5px 10px hsl(var(--shadow-medium)),
+      0 10px 20px hsl(var(--shadow-strong));
+  }
+
+  .text-glow {
+    text-shadow: 
+      0 0 10px hsl(var(--shadow-glow-primary)),
+      0 0 20px hsl(var(--shadow-glow-primary)),
+      0 0 30px hsl(var(--shadow-glow-primary));
+  }
+
+  /* Hero Animations */
+  .float-animation {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .parallax-bg {
+    background: var(--gradient-hero);
+    background-attachment: fixed;
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+  }
+
+  /* Search Bar 3D */
+  .search-3d {
+    @apply backdrop-blur-xl bg-glass/60 border border-white/20 rounded-2xl 
+           shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] 
+           hover:shadow-[0_12px_40px_0_rgba(31,38,135,0.45)]
+           transform hover:-translate-y-1 transition-all duration-300;
+  }
+
+  /* Section Cards with 3D */
+  .section-3d {
+    @apply glass-card transform-gpu perspective-1000 
+           hover:rotate-x-2 hover:rotate-y-1 hover:scale-105
+           transition-all duration-500 ease-out;
+  }
+
+  /* Interactive Elements */
+  .hover-lift {
+    @apply transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl;
+  }
+
+  .hover-glow {
+    @apply transition-all duration-300 hover:shadow-[0_0_30px_hsl(var(--shadow-glow-primary))];
+  }
+}
+
+@layer utilities {
+  /* 3D Utilities */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .rotate-x-2 {
+    transform: rotateX(2deg);
+  }
+
+  .rotate-y-1 {
+    transform: rotateY(1deg);
+  }
+
+  .transform-gpu {
+    transform: translateZ(0);
+  }
+
+  /* Glass Morphism Utilities */
+  .backdrop-blur-glass {
+    backdrop-filter: blur(20px);
+  }
+
+  .bg-glass {
+    background: var(--gradient-glass);
+  }
+
+  .shadow-glass {
+    box-shadow: 
+      0 8px 32px 0 hsl(var(--shadow-soft)),
+      inset 0 1px 0 hsl(var(--glass-border));
+  }
+
+  .border-glass {
+    border: 1px solid hsl(var(--glass-border));
+  }
+}
+
+/* Keyframe Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px hsl(var(--shadow-glow-primary));
+  }
+  50% {
+    box-shadow: 0 0 40px hsl(var(--shadow-glow-primary)), 0 0 60px hsl(var(--shadow-glow-primary));
+  }
+}
