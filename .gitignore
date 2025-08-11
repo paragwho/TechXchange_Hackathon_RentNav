@@ -1,1 +1,4 @@
+backend/__pycache__/
 backend/.venv/
+backend/.env
+get_token.ps1
