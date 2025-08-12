@@ -1,4 +1,7 @@
-backend/.venv/
+__pycache__/
+.venv/
+.env
+get_access_token.ps1
 
 # Logs
 logs
