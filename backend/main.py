@@ -1,8 +1,8 @@
 import os
 import requests
-import uvicorn
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Any, List, Optional, Mapping
 
@@ -12,6 +12,7 @@ from langchain.tools import Tool
 from langchain_chroma import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain.llms.base import LLM
+
 
 load_dotenv(override=True)
 
@@ -33,6 +34,10 @@ class WatsonxLLM(LLM):
     @property
     def _identifying_params(self) -> Mapping[str, Any]:
         return {}
+
+
+class ChatRequest(BaseModel):
+    query: str
 
 
 def query_watsonx(prompt: str) -> str:
@@ -71,59 +76,20 @@ def query_watsonx(prompt: str) -> str:
     )
 
 
-# def property_search_tool(query: str):
-#     """
-#     LangChain tool function for fetching property listings from RentCast.
-#     Expects a string like: "city=New York,state=NY,bedrooms=2"
-#     """
-#     api_key = os.getenv("RENTCAST_API_KEY")
-#     if not api_key:
-#         return "Error: Missing RENTCAST_API_KEY in environment variables"
-
-#     params = {}
-#     for part in query.split(","):
-#         if "=" in part:
-#             k, v = part.split("=", 1)
-#             params[k.strip()] = v.strip()
-
-#     rename_map = {"bedrooms": "beds", "bathrooms": "baths", "postal_code": "postalCode"}
-#     params = {rename_map.get(k, k): v for k, v in params.items()}
-
-#     url = "https://api.rentcast.io/v1/listings/rental"
-
-#     try:
-#         res = requests.get(
-#             url,
-#             headers={"Accept": "application/json", "X-Api-Key": api_key},
-#             params=params,
-#         )
-#         res.raise_for_status()
-#         return res.json()
-#     except requests.RequestException as e:
-#         return f"Error fetching data from RentCast: {str(e)}"
-
-
 def property_search_tool(query: str):
-    """
-    LangChain tool function for fetching property listings from RentCast.
-    Expects a string like: "city=New York,state=NY,bedrooms=2"
-    """
     api_key = os.getenv("RENTCAST_API_KEY")
     if not api_key:
         return "Error: Missing RENTCAST_API_KEY in environment variables"
 
-    # Parse "city=New York,state=NY,bedrooms=2" into dict
     params: dict[str, str] = {}
     for part in query.split(","):
         if "=" in part:
             k, v = part.split("=", 1)
             params[k.strip()] = v.strip()
 
-    # Map expected keys to RentCast API parameter names
     rename_map = {"bedrooms": "beds", "bathrooms": "baths", "postal_code": "postalCode"}
     params = {rename_map.get(k, k): v for k, v in params.items()}
 
-    # Ensure all values are strings (fixes type checker complaint)
     params = {k: str(v) for k, v in params.items() if v is not None}
 
     url = "https://api.rentcast.io/v1/listings/rental"
@@ -187,11 +153,16 @@ def build_agent():
 
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 agent_executor = build_agent()
-
-
-class ChatRequest(BaseModel):
-    query: str
 
 
 @app.post("/chat")
@@ -201,7 +172,3 @@ async def chat(req: ChatRequest):
         return {"answer": result["output"]}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-
-if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000)
