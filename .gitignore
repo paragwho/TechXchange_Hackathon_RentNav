@@ -1,7 +1,10 @@
+# Backend stuff
 __pycache__/
 .venv/
+db/
 .env
-get_access_token.ps1
+.ingested_files
+get_ibm_access_token.ps1
 
 # Logs
 logs

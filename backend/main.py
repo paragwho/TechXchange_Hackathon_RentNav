@@ -1,100 +1,207 @@
-# To run this app:
-# 1. Install the required libraries:
-#    pip install fastapi[standard] uvicorn python-dotenv requests
-# 2. Create a file named .env in the same directory and add your credentials:
-#    ACCESS_TOKEN="your_bearer_token_here"
-#    PROJECT_ID="your_project_id_here"
-# 3. Run the app from your terminal:
-#    uvicorn main:app --reload
-
 import os
 import requests
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+import uvicorn
 from dotenv import load_dotenv
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+from typing import Any, List, Optional, Mapping
 
-# Load environment variables from a .env file
+from langchain.agents import AgentExecutor, create_react_agent
+from langchain.prompts import ChatPromptTemplate
+from langchain.tools import Tool
+from langchain_chroma import Chroma
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain.llms.base import LLM
+
 load_dotenv(override=True)
 
-# Initialize FastAPI app
-app = FastAPI()
 
-# --- Configuration ---
-# Fetch credentials from environment variables
-ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
-PROJECT_ID = os.getenv("PROJECT_ID")
-WATSONX_URL = (
-    "https://us-south.ml.cloud.ibm.com/ml/v1/text/generation?version=2023-05-29"
-)
-MODEL_ID = "ibm/granite-3-8b-instruct"
+class WatsonxLLM(LLM):
+    @property
+    def _llm_type(self) -> str:
+        return "watsonx"
 
-# --- Add CORS Middleware ---
-origins = ["*"]
+    def _call(
+        self,
+        prompt: str,
+        stop: Optional[List[str]] = None,
+        run_manager: Optional[Any] = None,
+        **kwargs: Any,
+    ) -> str:
+        return query_watsonx(prompt)
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+    @property
+    def _identifying_params(self) -> Mapping[str, Any]:
+        return {}
 
 
-# --- Pydantic Model for Request Body ---
-# This defines the expected JSON structure for incoming requests.
-class PromptRequest(BaseModel):
-    prompt: str
+def query_watsonx(prompt: str) -> str:
+    token, project_id = os.getenv("IBM_ACCESS_TOKEN"), os.getenv("IBM_PROJECT_ID")
+    if not token or not project_id:
+        return "Error: Missing IBM_ACCESS_TOKEN or IBM_PROJECT_ID in .env"
 
-
-# --- API Endpoint ---
-@app.post("/generate")
-async def generate_text(request: PromptRequest):
-    """
-    Handles the text generation request by calling the Watsonx API.
-    Accepts a JSON object with a "prompt" key.
-    """
-    # Check for the API key and Project ID every time the endpoint is called.
-    if not ACCESS_TOKEN or not PROJECT_ID:
-        return {
-            "error": "Server configuration error: ACCESS_TOKEN or PROJECT_ID not found."
-        }
-
-    # The input structure for the model.
-    input_text = f"Input: {request.prompt}\nOutput:"
-
-    # Construct the request body for the Watsonx API
     body = {
-        "input": input_text,
+        "input": prompt,
         "parameters": {
             "decoding_method": "greedy",
-            "max_new_tokens": 250,
-            "min_new_tokens": 0,
+            "max_new_tokens": 500,
             "repetition_penalty": 1.2,
         },
-        "model_id": MODEL_ID,
-        "project_id": PROJECT_ID,
+        "model_id": os.getenv("MODEL_ID", "ibm/granite-3-8b-instruct"),
+        "project_id": project_id,
     }
-
-    # Set the authorization headers
     headers = {
         "Accept": "application/json",
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {ACCESS_TOKEN}",
+        "Authorization": f"Bearer {token}",
     }
 
-    # Make the POST request to the Watsonx API
-    response = requests.post(WATSONX_URL, headers=headers, json=body)
+    url = os.getenv(
+        "WATSONX_URL",
+        "https://us-south.ml.cloud.ibm.com/ml/v1/text/generation?version=2023-05-29",
+    )
+    res = requests.post(url, headers=headers, json=body)
 
-    # Check if the request was successful
-    if response.status_code != 200:
-        return response.json()
+    if res.status_code != 200:
+        return f"Error from Watsonx API: {res.text}"
 
-    data = response.json()
-
-    # Extract the generated text from the response
-    generated_text = data.get("results", [{}])[0].get(
-        "generated_text", "No text generated."
+    return (
+        res.json().get("results", [{}])[0].get("generated_text", "").strip()
+        or "No text generated."
     )
 
-    return {"generated_text": generated_text.strip()}
+
+# def property_search_tool(query: str):
+#     """
+#     LangChain tool function for fetching property listings from RentCast.
+#     Expects a string like: "city=New York,state=NY,bedrooms=2"
+#     """
+#     api_key = os.getenv("RENTCAST_API_KEY")
+#     if not api_key:
+#         return "Error: Missing RENTCAST_API_KEY in environment variables"
+
+#     params = {}
+#     for part in query.split(","):
+#         if "=" in part:
+#             k, v = part.split("=", 1)
+#             params[k.strip()] = v.strip()
+
+#     rename_map = {"bedrooms": "beds", "bathrooms": "baths", "postal_code": "postalCode"}
+#     params = {rename_map.get(k, k): v for k, v in params.items()}
+
+#     url = "https://api.rentcast.io/v1/listings/rental"
+
+#     try:
+#         res = requests.get(
+#             url,
+#             headers={"Accept": "application/json", "X-Api-Key": api_key},
+#             params=params,
+#         )
+#         res.raise_for_status()
+#         return res.json()
+#     except requests.RequestException as e:
+#         return f"Error fetching data from RentCast: {str(e)}"
+
+
+def property_search_tool(query: str):
+    """
+    LangChain tool function for fetching property listings from RentCast.
+    Expects a string like: "city=New York,state=NY,bedrooms=2"
+    """
+    api_key = os.getenv("RENTCAST_API_KEY")
+    if not api_key:
+        return "Error: Missing RENTCAST_API_KEY in environment variables"
+
+    # Parse "city=New York,state=NY,bedrooms=2" into dict
+    params: dict[str, str] = {}
+    for part in query.split(","):
+        if "=" in part:
+            k, v = part.split("=", 1)
+            params[k.strip()] = v.strip()
+
+    # Map expected keys to RentCast API parameter names
+    rename_map = {"bedrooms": "beds", "bathrooms": "baths", "postal_code": "postalCode"}
+    params = {rename_map.get(k, k): v for k, v in params.items()}
+
+    # Ensure all values are strings (fixes type checker complaint)
+    params = {k: str(v) for k, v in params.items() if v is not None}
+
+    url = "https://api.rentcast.io/v1/listings/rental"
+
+    try:
+        res = requests.get(
+            url,
+            headers={"Accept": "application/json", "X-Api-Key": api_key},
+            params=params,
+        )
+        res.raise_for_status()
+        return res.json()
+    except requests.RequestException as e:
+        return f"Error fetching data from RentCast: {str(e)}"
+
+
+def build_agent():
+    embeddings = HuggingFaceEmbeddings(
+        model_name=os.getenv(
+            "EMBEDDINGS_MODEL", "sentence-transformers/all-MiniLM-L6-v2"
+        )
+    )
+    vectordb = Chroma(
+        persist_directory=os.getenv("PERSIST_DIRECTORY", "db"),
+        embedding_function=embeddings,
+    )
+
+    tools = [
+        Tool(
+            name="DocumentSearch",
+            func=vectordb.as_retriever().get_relevant_documents,
+            description="Search in provided documents.",
+        ),
+        Tool(
+            name="RentCastAPI",
+            func=property_search_tool,
+            description="Get info about real estate listings. The query should be a comma-separated string of key-value pairs. Example: 'city=New York,state=NY,bedrooms=2'",
+        ),
+    ]
+
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            (
+                "system",
+                "You are a helpful assistant with access to tools:\n{tools}\n"
+                "Tool names:\n{tool_names}\n"
+                "Use format:\nQuestion:..\nThought:..\nAction:..\n"
+                "Action Input:..\nObservation:..\nRepeat as needed.\n"
+                "Thought: I now know the final answer\nFinal Answer:..",
+            ),
+            ("user", "{input}\n\n{agent_scratchpad}"),
+        ]
+    )
+
+    return AgentExecutor(
+        agent=create_react_agent(WatsonxLLM(), tools, prompt),
+        tools=tools,
+        verbose=False,
+        handle_parsing_errors=True,
+    )
+
+
+app = FastAPI()
+agent_executor = build_agent()
+
+
+class ChatRequest(BaseModel):
+    query: str
+
+
+@app.post("/chat")
+async def chat(req: ChatRequest):
+    try:
+        result = agent_executor.invoke({"input": req.query})
+        return {"answer": result["output"]}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="127.0.0.1", port=8000)
