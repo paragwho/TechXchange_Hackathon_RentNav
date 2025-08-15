@@ -1,0 +1,8 @@
+{
+  "/api/chat/route": "app/api/chat/route.js",
+  "/my-chat/page": "app/my-chat/page.js",
+  "/chat/page": "app/chat/page.js",
+  "/legal-rights-library/page": "app/legal-rights-library/page.js",
+  "/page": "app/page.js",
+  "/how-it-works/page": "app/how-it-works/page.js"
+}
