@@ -36,8 +36,8 @@ When a user sends a query to the `/chat` endpoint, the application follows these
 
 1.  **Clone the Repository:**
     ```bash
-    git clone <your-repository-url>
-    cd <your-repository-name>
+    git clone https://github.com/paragwho/TechXchange_Hackathon_RentNav.git
+    cd .\TechXchange_Hackathon_RentNav\backend
     ```
 
 2.  **Create a Virtual Environment:**
@@ -56,7 +56,7 @@ When a user sends a query to the `/chat` endpoint, the application follows these
     - Add your IBM Cloud credentials to the `.env` file:
       ```
       IBM_ACCESS_TOKEN="your_ibm_access_token"
-      IBM_CLOUD_PROJECT_ID="your_ibm_cloud_project_id"
+      IBM_PROJECT_ID="your_ibm_cloud_project_id"
       ```
 
 5.  **Add Documents:**
@@ -73,7 +73,7 @@ When a user sends a query to the `/chat` endpoint, the application follows these
 To run the FastAPI server, use the following command:
 
 ```bash
-uvicorn qa:app --reload
+uvicorn main:app --reload
 ```
 
 The server will be available at `http://127.0.0.1:8000`.
