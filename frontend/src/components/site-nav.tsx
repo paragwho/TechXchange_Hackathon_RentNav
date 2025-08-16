@@ -33,7 +33,7 @@ export function SiteNav() {
               <Menu className="size-5" />
             </button>
             <Link href="/" className="font-semibold tracking-tight text-xl sm:text-2xl">
-              Rent<span className="text-sky-500">Nav</span>
+              RentNav
             </Link>
           </div>
           <button
@@ -66,11 +66,11 @@ export function SiteNav() {
               <div className="px-2 py-1 font-semibold text-lg">Menu</div>
               <div className="mt-2 flex flex-col gap-1">
                 <DrawerLink refEl={firstFocus} href="/" icon={<Home className="size-5" />} label="Home" onClick={() => setOpen(false)} />
-                <DrawerLink href="/my-chat" icon={<MessageSquare className="size-5" />} label="My Chat" onClick={() => setOpen(false)} />
+                <DrawerLink href="/my-chat" icon={<MessageSquare className="size-5" />} label="Chats" onClick={() => setOpen(false)} />
                 <DrawerLink href="/legal-rights-library" icon={<LibraryBig className="size-5" />} label="Legal Rights Library" onClick={() => setOpen(false)} />
                 <DrawerLink href="/how-it-works" icon={<Info className="size-5" />} label="How It Works" onClick={() => setOpen(false)} />
               </div>
-              <div className="mt-auto text-xs text-slate-500 dark:text-slate-400 px-2">© {new Date().getFullYear()} Rent Housing Navigator</div>
+              <div className="mt-auto text-xs text-slate-500 dark:text-slate-400 px-2">© {new Date().getFullYear()} RentNav</div>
             </motion.aside>
           </div>
         )}
