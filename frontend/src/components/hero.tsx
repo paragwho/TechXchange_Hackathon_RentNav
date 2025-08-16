@@ -1,7 +1,7 @@
-"use client";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { motion, useMotionValue, useTransform } from "framer-motion";
-import { useRouter } from "next/navigation";
+'use client';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 
 export function Hero() {
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
@@ -48,10 +48,10 @@ export function Hero() {
         <div className="flex flex-col items-center text-center gap-8 w-full">
           <div className="relative select-none">
             <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight">
-              <span className="inline-block [text-shadow:0_2px_0_#00000010,0_8px_24px_rgba(2,6,23,.15)]">Rent Housing Navigator</span>
+              <span className="inline-block [text-shadow:0_2px_0_#00000010,0_8px_24px_rgba(2,6,23,.15)]">RentNav</span>
             </h1>
             <div aria-hidden className="absolute inset-0 -z-10 translate-y-2 blur-sm opacity-20 dark:opacity-30">
-              <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold">Rent Housing Navigator</h1>
+              <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold">RentNav</h1>
             </div>
           </div>
           <SearchBar placeholders={placeholders} placeholderIndex={placeholderIndex} />
@@ -73,11 +73,17 @@ function SearchBar({ placeholders, placeholderIndex }: { placeholders: string[];
     el.style.height = Math.min(el.scrollHeight, 200) + "px";
   }, [value]);
 
+  const startNewChat = () => {
+    if (value.trim()) {
+      router.push(`/chat?prompt=${encodeURIComponent(value.trim())}`);
+    }
+  };
+
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        router.push("/chat");
+        startNewChat();
       }}
       className="w-full max-w-3xl"
     >

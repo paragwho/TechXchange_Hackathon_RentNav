@@ -1,18 +1,33 @@
-"use client";
-import { SiteNav } from "@/components/site-nav";
-import { TiltCard } from "@/components/cards";
-import { useState } from "react";
-import { PdfDialog } from "@/components/pdf-dialog";
+'use client';
+import { SiteNav } from '@/components/site-nav';
+import { TiltCard } from '@/components/cards';
+import { useEffect, useState } from 'react';
+import { PdfDialog } from '@/components/pdf-dialog';
 
-const docs = [
-  { id: 1, title: "Model Tenancy Act (India) – Summary PDF", path: "/pdfs/model-tenancy-act-summary.pdf" },
-  { id: 2, title: "Security Deposit Rules – State-wise", path: "/pdfs/security-deposit-rules.pdf" },
-  { id: 3, title: "Notice Periods & Eviction – Quick Guide", path: "/pdfs/notice-eviction-guide.pdf" },
-  { id: 4, title: "Maintenance Responsibilities – Landlord vs Tenant", path: "/pdfs/maintenance-landlord-tenant.pdf" },
-];
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
 
 export default function LegalPage() {
-  const [active, setActive] = useState<{title: string, path: string} | null>(null);
+  const [docs, setDocs] = useState<{ id: number; title: string; path: string }[]>([]);
+  const [active, setActive] = useState<{ title: string; path: string } | null>(null);
+
+  useEffect(() => {
+    async function fetchDocs() {
+      try {
+        const res = await fetch(`${backendUrl}/documents`);
+        const data = await res.json();
+        const formattedDocs = data.documents.map((doc: string, index: number) => ({
+          id: index + 1,
+          title: doc.replace(/\.pdf/g, '').replace(/-/g, ' '),
+          path: `${backendUrl}/documents/${doc}`,
+        }));
+        setDocs(formattedDocs);
+      } catch (error) {
+        console.error('Error fetching documents:', error);
+      }
+    }
+    fetchDocs();
+  }, []);
+
   return (
     <>
       <SiteNav />
@@ -27,7 +42,10 @@ export default function LegalPage() {
             <TiltCard key={d.id}>
               <div className="p-5">
                 <h3 className="text-lg font-semibold">{d.title}</h3>
-                <button className="mt-4 rounded-xl bg-sky-600 text-white px-4 h-10 hover:opacity-90" onClick={() => setActive({title: d.title, path: d.path})}>
+                <button
+                  className="mt-4 rounded-xl bg-sky-600 text-white px-4 h-10 hover:opacity-90"
+                  onClick={() => setActive({ title: d.title, path: d.path })}
+                >
                   Open PDF
                 </button>
               </div>

@@ -2,6 +2,7 @@ import os
 import requests
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Any, List, Optional, Mapping
@@ -163,6 +164,22 @@ app.add_middleware(
 )
 
 agent_executor = build_agent()
+
+DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+
+
+@app.get("/documents")
+async def get_documents():
+    pdf_files = [f for f in os.listdir(DATA_DIR) if f.endswith(".pdf")]
+    return {"documents": pdf_files}
+
+
+@app.get("/documents/{file_name}")
+async def get_document(file_name: str):
+    file_path = os.path.join(DATA_DIR, file_name)
+    if os.path.exists(file_path) and file_name.endswith(".pdf"):
+        return FileResponse(file_path)
+    raise HTTPException(status_code=404, detail="File not found")
 
 
 @app.post("/chat")
