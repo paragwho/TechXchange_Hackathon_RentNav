@@ -47,7 +47,7 @@ frontend/
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/your-username/your-repo-name.git
+   git clone https://github.com/paragwho/TechXchange_Hackathon_RentNav.git
    cd frontend
    ```
 
@@ -81,15 +81,6 @@ frontend/
 * `npm run start` → Runs production build
 * `npm run lint` → Lints code
 
----
 
-## 🤝 Contribution
-
-Contributions are welcome!
-
-1. Fork the repo
-2. Create a new branch (`feature/your-feature`)
-3. Commit changes
-4. Open a Pull Request
 
 
