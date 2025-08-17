@@ -14,7 +14,7 @@ Here are the main components:
 - **AI Agent:** The "brain" of the application. It uses an IBM LLM to reason about user queries and decide which tool to use.
 - **Tools:** The agent has access to a set of tools:
     - **DocumentSearch:** A tool that searches a vector database of your private documents to answer questions based on their content.
-    - **RentCastAPI:** A tool that can be used to fetch real-time real estate data (currently a placeholder).
+    - **RentCastAPI:** A tool that can be used to fetch real-time real estate data from RentCast.
 - **Vector Database:** A ChromaDB vector store that contains the numerical representations (embeddings) of your documents.
 - **Embedding Model:** A local `sentence-transformers` model that is used to convert your documents and user queries into embeddings.
 
