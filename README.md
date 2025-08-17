@@ -1,34 +1,40 @@
-# TechXchange\_Hackathon\_Rentnav
+# TechXchange\_Hackathon\_RentNav
 
 Details the work done by team **Hacknologists** for the IBM TechXchange Pre-Conference WatsonX Hackathon under the path **"Build with agentic AI challenge."** The project has been built majorly in **<ins>Python</ins>** using **<ins>LangChain</ins>** and the IBM WatsonX **<ins>Granite</ins>** models.
 
 ## Demo Video:
 
+[Video Link](https://vimeo.com/1110697915?share=copy)
 ---
 
-## ❓ What is Rentnav?
+## ❓ What is RentNav?
 
-Welcome to **Rentnav**, a web platform built on **WatsonX Granite model**, designed to simplify the rental experience by providing **transparent rental price insights** and **clear landlord–tenant rights guidance**.
+Welcome to **RentNav**, a web platform built on **WatsonX Granite model**, designed to simplify the rental experience by providing **transparent rental price insights** and **clear landlord–tenant rights guidance**.
 
-Rentnav tackles one of the biggest pain points in housing: the lack of transparency around **fair rent values** and confusion about **legal rights**. By combining data-driven rental intelligence with explainable legal information, Rentnav empowers both tenants and landlords to make informed, confident, and fair decisions.
+RentNav tackles one of the biggest pain points in housing: the lack of transparency around **fair rent values** and confusion about **legal rights**. By combining data-driven rental intelligence with explainable legal information, RentNav empowers both tenants and landlords to make informed, confident, and fair decisions.
 
-This project was developed as part of the **WatsonX Hackathon**, and we believe Rentnav has the potential to transform how people navigate the housing rental ecosystem.
+This project was developed as part of the **WatsonX Hackathon**, and we believe RentNav has the potential to transform how people navigate the housing rental ecosystem.
 
 ---
 
-## 🎯 Why Rentnav?
+## 🏠 Architecture
+<img width="930" height="1121" alt="architecture" src="https://github.com/user-attachments/assets/6535b5dd-4e7d-4c98-864e-72c88913f004" />
 
-We built Rentnav with one clear goal: **to bring fairness, clarity, and trust to renting.**
+--- 
 
-Whether it’s finding out the fair market value of a house, understanding lease laws in your jurisdiction, or resolving disputes like deposit returns, Rentnav uses AI to deliver actionable insights instantly.
+## 🎯 Why RentNav?
 
-> 🏠 **Knowledge is protection**: by combining rent analytics with legal literacy, Rentnav prevents disputes before they start.
+We built RentNav with one clear goal: **to bring fairness, clarity, and trust to renting.**
+
+Whether it’s finding out the fair market value of a house, understanding lease laws in your jurisdiction, or resolving disputes like deposit returns, RentNav uses AI to deliver actionable insights instantly.
+
+> 🏠 **Knowledge is protection**: by combining rent analytics with legal literacy, RentNav prevents disputes before they start.
 
 ---
 
 ## 🚀 Features
 
-Rentnav connects to multiple datasets—rental listings, government registries, legal documents—and enables users to interact with them in powerful ways. For this hackathon, we’ve built **four key modules** to demonstrate the platform’s potential.
+RentNav connects to multiple datasets—rental listings, government registries, legal documents—and enables users to interact with them in powerful ways. For this hackathon, we’ve built **four key modules** to demonstrate the platform’s potential.
 
 ### 1. **Smart Rent Benchmarks**
 
@@ -70,10 +76,10 @@ Rentnav connects to multiple datasets—rental listings, government registries, 
 
 ## 🙌 Conclusion
 
-Rentnav is just the beginning. We envision this platform scaling globally, empowering **tenants and landlords** to make smarter, fairer, and more transparent rental decisions.
+RentNav is just the beginning. We envision this platform scaling globally, empowering **tenants and landlords** to make smarter, fairer, and more transparent rental decisions.
 
-While this is just a proof-of-concept, we are excited about the possibilities of **WatsonX Granite** and agentic AI to transform real estate—and we look forward to building Rentnav further.
+While this is just a proof-of-concept, we are excited about the possibilities of **WatsonX Granite** and agentic AI to transform real estate—and we look forward to building RentNav further.
 
-**Thank you for checking out Rentnav!** We hope to see you at the WatsonX Hackathon finals in Orlando!
+**Thank you for checking out RentNav!** We hope to see you at the WatsonX Hackathon finals in Orlando!
 
 ---
